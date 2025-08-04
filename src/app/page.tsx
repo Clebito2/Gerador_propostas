@@ -24,7 +24,7 @@ export default function Home() {
       </main>
       <footer className="text-center py-8 text-gray-500">
         <Image
-            src="/logo-live.svg"
+            src="/logo.png"
             alt="Logo Live"
             width={100}
             height={40}

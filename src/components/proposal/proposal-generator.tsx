@@ -60,10 +60,13 @@ export function ProposalGenerator() {
         diagnostics: confirmedData.diagnosticSummary,
       });
 
-      const actionPlan: ActionPlanItem[] = JSON.parse(analysisResult.actionPlan || '[]');
-      const ganttChart: GanttChartItem[] = JSON.parse(analysisResult.ganttChart || '[]');
+      // **INÍCIO DA CORREÇÃO**
+      // 1. Extrai os arrays de 'actionPlan' e 'ganttChart' de dentro do resultado da IA.
+      const { actionPlan, ganttChart } = analysisResult;
 
+      // 2. Com o 'ganttChart' agora preenchido, calcula o custo total.
       const totalCost = ganttChart.reduce((acc, item) => acc + item.preco, 0);
+      // **FIM DA CORREÇÃO**
 
       const fullProposalData: ProposalData = {
         cliente: {
@@ -81,15 +84,15 @@ export function ProposalGenerator() {
         },
         diagnostico: confirmedData.diagnosticSummary,
         mapcaAnalysis: analysisResult.mapcaAnalysis,
-        planoDeAcao: actionPlan,
-        ganttChart: ganttChart,
+        planoDeAcao: actionPlan, // Variável corrigida
+        ganttChart: ganttChart,   // Variável corrigida
         escopoDetalhado: ganttChart.map((item: GanttChartItem) => ({
             titulo: item.entregavel,
             detalhes: `Responsável: ${item.responsavel} | Prazo: ${item.prazo}`
         })),
         investimento: {
-          valorTotalNumerico: totalCost,
-          valorTotalExtenso: "A ser preenchido", // Idealmente, converter número para extenso.
+          valorTotalNumerico: totalCost, // Variável corrigida
+          valorTotalExtenso: "A ser preenchido",
           formaPagamento: "50% na assinatura do contrato e 50% na entrega final.",
           items: ganttChart.map((item: GanttChartItem) => ({ name: item.entregavel, value: item.preco }))
         },
