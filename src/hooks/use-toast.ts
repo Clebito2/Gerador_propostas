@@ -1,20 +1,20 @@
 // Inspired by react-hot-toast library
 import * as React from "react"
+import { type ToastProps } from "@/components/ui/toast"
 
-type ToasterToast = Toast & {
+// **INÍCIO DA CORREÇÃO**
+// O tipo 'ToasterToast' agora é baseado no 'ToastProps' importado, quebrando o ciclo.
+type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: React.ReactNode
 }
+// **FIM DA CORREÇÃO**
+
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
-
-type ToastProps = {
-  id: string
-  onOpenChange: (open: boolean) => void
-} & ToasterToast
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -138,9 +138,11 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
-
-function toast(props: Toast) {
+// **INÍCIO DA CORREÇÃO**
+// A definição de 'Toast' que criava o ciclo foi removida.
+// A função 'toast' agora usa 'Omit' para definir seus props, o que é mais limpo.
+function toast(props: Omit<ToasterToast, "id">) {
+// **FIM DA CORREÇÃO**
   const id = genId()
 
   const update = (props: ToasterToast) =>
