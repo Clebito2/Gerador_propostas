@@ -113,6 +113,10 @@ const ChartTooltipContent = React.forwardRef<
       labelFormatter?: (label: any, payload: any[]) => React.ReactNode
       labelClassName?: string
       formatter?: (value: any, name: any, item: any, index: number, payload: any) => React.ReactNode
+      // ** INÍCIO DA CORREÇÃO 1 **
+      nameKey?: string
+      labelKey?: string
+      // ** FIM DA CORREÇÃO 1 **
     }
 >(
   (
@@ -128,7 +132,12 @@ const ChartTooltipContent = React.forwardRef<
       labelClassName,
       formatter,
       color,
-     
+      // ** INÍCIO DA CORREÇÃO 2 **
+      nameKey,
+      labelKey,
+    },
+    ref // <-- ref também estava faltando e é essencial
+    // ** FIM DA CORREÇÃO 2 **
   ) => {
     const { config } = useChart()
 
@@ -285,7 +294,9 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload.map((item) => {
-          /const key = `${nameKey || item.dataKey || "value"}`/
+          // ** INÍCIO DA CORREÇÃO 3 **
+          const key = `${nameKey || item.dataKey || "value"}`
+          // ** FIM DA CORREÇÃO 3 **
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
           return (
